@@ -20,31 +20,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ctx.fillRect(0, 0, width, height);
 
     // Text
-    const textContent = (text as string) || "Default Text";
-    console.log("Drawing text:", textContent);
-
+    const textContent = (text as string) || "bold.video";
     ctx.fillStyle = tc as string;
-    ctx.font = "48px sans-serif";
-    ctx.textAlign = "left";
+    ctx.font = "24px sans-serif";
+    ctx.textBaseline = "bottom";
     const padding = 50;
-
-    // Add text measurement debug
-    const metrics = ctx.measureText(textContent);
-    console.log("Text metrics:", {
-      width: metrics.width,
-      actualBoundingBox: {
-        left: metrics.actualBoundingBoxLeft,
-        right: metrics.actualBoundingBoxRight,
-      },
-    });
-
     ctx.fillText(textContent, padding, height - padding);
+
+    // Logo
+    if (logo) {
+      try {
+        const logoImage = await loadImage(logo as string);
+        const logoSize = 150;
+        ctx.drawImage(
+          logoImage,
+          width - logoSize - padding,
+          height - logoSize - padding,
+          logoSize,
+          logoSize
+        );
+      } catch (err) {
+        console.error("Failed to load logo:", err);
+      }
+    }
 
     // Generate PNG Buffer
     const buffer = canvas.toBuffer("image/png");
     console.log("Buffer size:", buffer.length);
 
-    // Send the image buffer as a response
     res.setHeader("Content-Type", "image/png");
     res.send(buffer);
   } catch (error) {
