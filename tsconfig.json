@@ -6,8 +6,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "jsx": "react"
   },
-  "include": ["api/**/*.ts"],
+  "include": ["api/**/*.ts", "api/**/*.tsx"],
   "exclude": ["node_modules"]
 } 
