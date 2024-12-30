@@ -1,63 +1,56 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 
-async function loadGoogleFont(font: string) {
-  const url = `https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap`;
-  const css = await (await fetch(url)).text();
-  const resource = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/
-  );
-
-  if (resource) {
-    return await (await fetch(resource[1])).arrayBuffer();
-  }
-  throw new Error("failed to load font data");
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
-
-  const { text, logo, bg = "white", tc = "black" } = req.query;
-
-  const width = 1200;
-  const height = 630;
-  const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext("2d");
-
-  // Background
-  ctx.fillStyle = bg as string;
-  ctx.fillRect(0, 0, width, height);
-
-  // Text
-  ctx.fillStyle = tc as string;
-  ctx.font = "bold 48px 'Inter'";
-  ctx.textAlign = "left";
-  const padding = 50;
-  ctx.fillText((text as string) || "Default Text", padding, height - padding);
-
-  // Logo (if provided)
-  if (logo) {
-    try {
-      const logoImage = await loadImage(logo as string);
-      const logoSize = 150;
-      ctx.drawImage(
-        logoImage,
-        width - logoSize - padding,
-        height - logoSize - padding,
-        logoSize,
-        logoSize
-      );
-    } catch (err) {
-      console.error("Failed to load logo:", err);
+  try {
+    if (req.method !== "GET") {
+      return res.status(405).json({ message: "Method not allowed" });
     }
+
+    const { text, logo, bg = "white", tc = "black" } = req.query;
+    console.log("Query params:", { text, logo, bg, tc });
+
+    const width = 1200;
+    const height = 630;
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext("2d");
+
+    // Background
+    ctx.fillStyle = bg as string;
+    ctx.fillRect(0, 0, width, height);
+
+    // Text
+    const textContent = (text as string) || "Default Text";
+    console.log("Drawing text:", textContent);
+
+    ctx.fillStyle = tc as string;
+    ctx.font = "48px sans-serif";
+    ctx.textAlign = "left";
+    const padding = 50;
+
+    // Add text measurement debug
+    const metrics = ctx.measureText(textContent);
+    console.log("Text metrics:", {
+      width: metrics.width,
+      actualBoundingBox: {
+        left: metrics.actualBoundingBoxLeft,
+        right: metrics.actualBoundingBoxRight,
+      },
+    });
+
+    ctx.fillText(textContent, padding, height - padding);
+
+    // Generate PNG Buffer
+    const buffer = canvas.toBuffer("image/png");
+    console.log("Buffer size:", buffer.length);
+
+    // Send the image buffer as a response
+    res.setHeader("Content-Type", "image/png");
+    res.send(buffer);
+  } catch (error) {
+    console.error("Error generating image:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
-
-  // Generate PNG Buffer
-  const buffer = canvas.toBuffer("image/png");
-
-  // Send the image buffer as a response
-  res.setHeader("Content-Type", "image/png");
-  res.send(buffer);
 }
