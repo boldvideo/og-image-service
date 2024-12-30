@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import path from "path";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -20,7 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Text
   ctx.fillStyle = tc as string;
-  ctx.font = "bold 48px sans-serif"; // Using system sans-serif font
+  ctx.font = "48px system-ui";
   ctx.textAlign = "left";
   const padding = 50;
   ctx.fillText((text as string) || "Default Text", padding, height - padding);
