@@ -1,6 +1,19 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 
+async function loadGoogleFont(font: string) {
+  const url = `https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap`;
+  const css = await (await fetch(url)).text();
+  const resource = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  );
+
+  if (resource) {
+    return await (await fetch(resource[1])).arrayBuffer();
+  }
+  throw new Error("failed to load font data");
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -19,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Text
   ctx.fillStyle = tc as string;
-  ctx.font = "48px system-ui";
+  ctx.font = "bold 48px 'Inter'";
   ctx.textAlign = "left";
   const padding = 50;
   ctx.fillText((text as string) || "Default Text", padding, height - padding);
