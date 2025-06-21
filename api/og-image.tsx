@@ -6,10 +6,8 @@ export const config = {
   runtime: "edge",
 };
 
-const boldLogoSvg = `<svg width="135" height="127" viewBox="0 0 135 127" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="135" height="127" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M31 105L31 21L72.9742 21C91.0994 21 98.8674 30.6042 98.8674 42.2664C98.8674 51.459 96.0055 58.4563 90.0092 62.984C100.094 65.7281 105 75.3323 105 86.5829C105 93.1458 103.632 99.8368 99.1436 105L31 105Z" fill="#41C6A6"/>
-</svg>`;
+// Bold logo URL - using the hosted version
+const boldLogoUrl = "https://raw.githubusercontent.com/boldvideo/og-image-service/main/img/bold-logo-on-white.png";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -31,15 +29,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             height: "100%",
             width: "100%",
             display: "flex",
-            backgroundColor: "#41C6A6",
+            backgroundColor: bg,
             fontFamily: "Inter, sans-serif",
+            padding: "30px",
           }}
         >
           {/* Main content area */}
           <div
             style={{
               flex: img ? "0 0 60%" : "1",
-              backgroundColor: bg,
+              backgroundColor: "white",
+              border: "3px solid black",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -111,10 +111,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               style={{
                 flex: "1",
                 backgroundColor: "black",
+                border: "3px solid black",
+                borderLeft: "none",
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                overflow: "hidden",
               }}
             >
               <img
@@ -126,55 +129,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 }}
               />
               {/* Bold logo overlay */}
-              <div
+              <img
+                src={boldLogoUrl}
                 style={{
                   position: "absolute",
                   bottom: "40px",
                   right: "40px",
                   width: "100px",
                   height: "100px",
-                  backgroundColor: "white",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    backgroundColor: "#41C6A6",
-                    borderRadius: "8px",
-                  }}
-                />
-              </div>
-            </div>
-          ) : (
-            /* Bold logo when no image */
-            <div
-              style={{
-                position: "absolute",
-                bottom: "40px",
-                right: "40px",
-                width: "100px",
-                height: "100px",
-                backgroundColor: "white",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  backgroundColor: "#41C6A6",
                   borderRadius: "8px",
                 }}
               />
             </div>
+          ) : (
+            /* Bold logo when no image */
+            <img
+              src={boldLogoUrl}
+              style={{
+                position: "absolute",
+                bottom: "60px",
+                right: "60px",
+                width: "100px",
+                height: "100px",
+                borderRadius: "8px",
+              }}
+            />
           )}
         </div>
       ),
