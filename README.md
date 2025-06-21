@@ -6,24 +6,33 @@ Simple, fast, and customizable Open Graph image generator. Used in production at
 
 Generates dynamic social media preview images with:
 
-- Custom text
-- Logo placement
-- Background colors
-- Text colors
+- Custom text and video duration badges
+- Logo placement with URL and date information
+- Background colors and text colors
+- Optional image/thumbnail display with Bold logo overlay
+- Professional layout optimized for social media sharing
 
 ## Usage
 
 `GET /api/og-image`
 Query params:
 
-- `text`: Text to display
-- `logo`: URL of logo image
-- `bg`: Background color (hex or name)
-- `tc`: Text color (hex or name)
+- `text`: Text to display (optional, defaults to "bold.video")
+- `logo`: URL of logo image (optional)
+- `bg`: Background color (optional, defaults to "#41C6A6" - mint)
+- `tc`: Text color (optional, defaults to "black")
+- `l`: Video length string, e.g. "08:24" (optional)
+- `url`: URL to display at bottom (optional)
+- `date`: Date string to display (optional)
+- `img`: Background image URL for right side (optional)
 
-## Example
+## Examples
 
+Basic example:
 `GET /api/og-image?text=Hello%20World&logo=https://bold.video/logo.png&bg=white&tc=black`
+
+Full example with all parameters:
+`GET /api/og-image?text=Revolutionizing%20Archaeology%20with%20Digital%20Tools&l=08:24&logo=https://example.com/tale-logo.png&url=tale.bold.video&date=JUN%2021%202025&img=https://example.com/thumbnail.jpg`
 
 # Deploy your own
 
