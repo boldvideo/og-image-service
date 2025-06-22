@@ -48,7 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }}
           >
             {/* Top section with length badge and text */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxHeight: "70%" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px", flex: "1 1 auto" }}>
               {length && (
                 <div
                   style={{
@@ -71,10 +71,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                   fontSize: img ? 64 : 72, 
                   fontWeight: "bold",
                   color: tc,
-                  lineHeight: 1.15,
+                  lineHeight: 1.2,
                   marginTop: "10px",
-                  overflow: "hidden",
-                  maxHeight: "220px",
+                  paddingBottom: "10px",
                 }}
               >
                 {text || "bold.video"}
