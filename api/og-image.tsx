@@ -43,11 +43,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              padding: "60px",
+              padding: "50px",
+              paddingBottom: "40px",
             }}
           >
-            {/* Top section with length badge */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {/* Top section with length badge and text */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxHeight: "70%" }}>
               {length && (
                 <div
                   style={{
@@ -67,11 +68,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               {/* Main text */}
               <div 
                 style={{ 
-                  fontSize: 72, 
+                  fontSize: img ? 64 : 72, 
                   fontWeight: "bold",
                   color: tc,
-                  lineHeight: 1.1,
-                  marginTop: "20px",
+                  lineHeight: 1.15,
+                  marginTop: "10px",
+                  overflow: "hidden",
+                  maxHeight: "220px",
                 }}
               >
                 {text || "bold.video"}
@@ -84,19 +87,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 {logo && (
                   <img
                     src={logo}
-                    width="120"
-                    height="120"
+                    width="100"
+                    height="100"
                     style={{ objectFit: "contain" }}
                   />
                 )}
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   {url && (
-                    <div style={{ fontSize: 24, color: tc }}>
+                    <div style={{ fontSize: 20, color: tc }}>
                       {url}
                     </div>
                   )}
                   {date && (
-                    <div style={{ fontSize: 24, color: tc, opacity: 0.7 }}>
+                    <div style={{ fontSize: 20, color: tc, opacity: 0.7 }}>
                       {date}
                     </div>
                   )}
