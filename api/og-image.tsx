@@ -22,6 +22,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const date = searchParams.get("date");
     const img = searchParams.get("img");
 
+    // Truncate text if too long (roughly 3 lines worth)
+    const maxChars = img ? 90 : 120;
+    const displayText = text || "bold.video";
+    const truncatedText = displayText.length > maxChars 
+      ? displayText.substring(0, maxChars).trim() + "..." 
+      : displayText;
+
     return new ImageResponse(
       (
         <div
@@ -76,12 +83,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                   paddingBottom: "10px",
                 }}
               >
-                {text || "bold.video"}
+                {truncatedText}
               </div>
             </div>
 
             {/* Bottom section with logo, url, and date */}
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", minHeight: "100px", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "flex-end", gap: "20px" }}>
                 {logo && (
                   <img
