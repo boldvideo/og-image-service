@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const img = searchParams.get("img");
 
     // Truncate text if too long (roughly 3 lines worth)
-    const maxChars = img ? 90 : 120;
+    const maxChars = img ? 48 : 70;
     const displayText = text || "bold.video";
     const truncatedText = displayText.length > maxChars 
       ? displayText.substring(0, maxChars).trim() + "..." 
